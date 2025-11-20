@@ -2,3 +2,5 @@
 @section('content')
 
 <title>Activity</title>
+
+@endsection

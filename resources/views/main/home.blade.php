@@ -2,3 +2,5 @@
 @section('content')
 
 <title>Homepage</title>
+
+@endsection

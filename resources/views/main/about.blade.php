@@ -2,3 +2,5 @@
 @section('content')
 
 <title>About us</title>
+
+@endsection
