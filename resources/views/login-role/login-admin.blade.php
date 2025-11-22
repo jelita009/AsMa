@@ -4,19 +4,21 @@
 <title>Admin Login</title>
 <h4>Login Sekarang</h4>
 
+@if(session('error'))
+    <p style="color: red;">{{ session('error') }}</p>
+@endif
+
 <form method="POST" action="{{ route('login-adm') }}">
     @csrf
 
-    <label>username:</label><br>
-    <input type="text" name="username" required><br><br>
+    <label>Username:</label><br>
+    <input type="text" name="identifier" required><br><br>
 
     <label>Password:</label><br>
     <input type="password" name="password" required><br><br>
 
-</form>
+    <button type="submit">Login</button>
 
-<div>
-    <!-- Knowing is not enough; we must apply. Being willing is not enough; we must do. - Leonardo da Vinci -->
-</div>
+</form>
 
 @endsection

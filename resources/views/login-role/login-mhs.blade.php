@@ -1,22 +1,24 @@
 @extends('layouts.app')
 @section('content')
 
-<title>Admin Login</title>
+<title>Mahasiswa Login</title>
 <h4>Login Sekarang</h4>
+
+@if(session('error'))
+<p style="color: red;">{{ session('error') }}</p>
+@endif
 
 <form method="POST" action="{{ route('login-mhs') }}">
     @csrf
 
     <label>NIM:</label><br>
-    <input type="text" name="nim" required><br><br>
+    <input type="text" name="identifier" required><br><br>
 
     <label>Password:</label><br>
     <input type="password" name="password" required><br><br>
 
-</form>
+    <button type="submit">Login</button>
 
-<div>
-    <!-- Let all your things have their places; let each part of your business have its time. - Benjamin Franklin -->
-</div>
+</form>
 
 @endsection
