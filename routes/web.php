@@ -4,8 +4,9 @@ use App\Http\Controllers\AspirationController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ProfileController;
 
-Route::get('/home', function () {
+Route::get('/', function () {
     return view('main.home');
 })->name('home');
 
@@ -21,14 +22,19 @@ Route::get('/visitors', function () {
     return view('main.graphic');
 })->name('visitors');
 
-Route::get('/aspiration', [AspirationController::class, 'create'])->name('aspiration.create'); 
-Route::post('/aspiration', [AspirationController::class, 'store'])->middleware('throttle:30,1')->name('aspiration.store'); // fungsinya biar bisa ngirem aspirasi per 30menit
+Route::get('/aspiration', [AspirationController::class, 'create'])
+    ->middleware('mahasiswa.only')
+    ->name('aspiration.create');
+Route::post('/aspiration', [AspirationController::class, 'store'])
+    ->middleware(['throttle:30,1', 'mahasiswa.only'])
+    ->name('aspiration.store'); 
 
-Route::get('/profile', function () {
-    return view('main.profile');
-})->name('profile');
+Route::get('/profile', [ProfileController::class, 'show'])
+    ->name('profile');
+Route::post('/profile/password', [ProfileController::class, 'updatePassword'])
+    ->name('profile.password.update');
 
-Route::get('/', function () {
+Route::get('/logins', function () {
     return view('main.loginpage');
 })->name('login');
 
@@ -74,6 +80,22 @@ Route::post('/logout', function () {
     return redirect()->route('login');
 })->name('logout');
 
-Route::post('/aspirasi/store', [AspirationController::class, 'store'])->middleware('mahasiswa.only');
 Route::delete('/aspirasi/{id}', [AspirationController::class, 'destroy'])->middleware('admin.only')->name('aspiration.destroy');
-Route::delete('/aspirasi', [AspirationController::class, 'destroyAll'])->name('aspiration.destroyAll');
+Route::delete('/aspirasi', [AspirationController::class, 'destroyAll'])->middleware('admin.only')->name('aspiration.destroyAll');
+
+Route::middleware('admin.only')->group(function () {
+    // Tambahkan rute yang hanya dapat diakses oleh admin di sini
+    Route::get('/aspirasi/{id}/reply', [AspirationController::class, 'showReplyForm'])->name('aspiration.reply.form');
+    Route::post('/aspirasi/{id}/reply', [AspirationController::class, 'storeReply'])->name('aspiration.reply.store');
+});
+
+Route::middleware('admin.only')->get('/admin/aspirations', [AspirationController::class, 'adminIndex'])->name('admin.index');
+
+// Mahasiswa report aspirasi
+Route::post('/aspirasi/{id}/report', [AspirationController::class, 'report'])
+    ->middleware('mahasiswa.only')
+    ->name('aspiration.report');
+
+    // Admin lihar report
+Route::middleware('admin.only')->get('/admin/reports', [AspirationController::class, 'adminReports'])
+    ->name('admin.reports.index');

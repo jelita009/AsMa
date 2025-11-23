@@ -21,7 +21,7 @@
         <select name="category" required>
             <option value="">-- Pilih Kategori --</option>
             <option value="fasilitas">Fasilitas</option>
-            <option value="curhat">Curhatan</option>
+            <option value="curhatan">Curhatan</option>
             <option value="kampus">Kampus</option>
             <option value="akademik">Akademik</option>
         </select>
@@ -37,6 +37,11 @@
 
         <br><br>
 
+        <label>
+            <input type="checkbox" name="is_anonymous" value="1" {{ old('is_anonymous') ? 'checked' : ''}}>
+            Kirim sebagai anonim
+        </label>
+        <br>
         <button type="submit">Kirim Aspirasi</button>
     </form>
 @endif

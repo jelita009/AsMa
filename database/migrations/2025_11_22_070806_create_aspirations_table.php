@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('votes')->default(0);
             // Identitwaass
             $table->unsignedBigInteger('user_id');
-            $table->string('role');
+            $table->string('role')->nullable();
             $table->timestamps();
         });
     }
