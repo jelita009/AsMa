@@ -5,10 +5,9 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VisitorController;
 
-Route::get('/', function () {
-    return view('main.home');
-})->name('home');
+Route::get('/', [VisitorController::class, 'home'])->name('home');
 
 Route::get('/about', function () {
     return view('main.about');
@@ -18,9 +17,7 @@ Route::get('/activity', [AspirationController::class, 'index'])->name('activity'
 Route::get('/activity/category/{kategori}', [AspirationController::class, 'index'])->name('activity.filter');
 Route::post('/activity/{id}/vote', [AspirationController::class, 'vote'])->middleware('mahasiswa.only')->name('aspiration.vote');
 
-Route::get('/visitors', function () {
-    return view('main.graphic');
-})->name('visitors');
+Route::get('/visitors', [VisitorController::class, 'graphic'])->name('visitors');
 
 Route::get('/aspiration', [AspirationController::class, 'create'])
     ->middleware('mahasiswa.only')
